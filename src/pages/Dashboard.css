@@ -1,0 +1,28 @@
+.dashboard {
+  padding: 0 40px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.metrics-header {
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.metrics-header h2 {
+  font-size: 1.8rem;
+  margin-bottom: 5px;
+  color: #E2E8F0;
+}
+
+.metrics-header p {
+  font-size: 1rem;
+  color: #A0AEC0;
+  margin: 0;
+}
+
+.case-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 25px;
+}

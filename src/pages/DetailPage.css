@@ -1,0 +1,146 @@
+.detail-page {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+  padding-bottom: 50px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 25px;
+  color: #A485F8;
+  text-decoration: none;
+  font-weight: 500;
+}
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.section-card {
+  background: #1A1625;
+  border: 1px solid #3a334a;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 25px;
+}
+
+.section-card h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #fff;
+  background: linear-gradient(90deg, #A485F8, #7F56D9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #3a334a;
+  margin-bottom: 20px;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.overview-grid p, .tab-content p {
+  margin: 0;
+  color: #E2E8F0;
+}
+
+.overview-grid p strong {
+  color: #A0AEC0;
+  font-weight: 500;
+}
+
+/* Tabs */
+.tab-headers {
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid #3a334a;
+  margin-bottom: 20px;
+}
+
+.tab-headers button {
+  padding: 10px 20px;
+  border: none;
+  background: transparent;
+  color: #A0AEC0;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.tab-headers button.active {
+  color: #A485F8;
+  border-bottom: 3px solid #A485F8;
+}
+
+.tab-content {
+  min-height: 100px;
+  color: #E2E8F0;
+}
+.tab-content h4 {
+  color: #A0AEC0;
+  margin-bottom: 8px;
+}
+.tab-content ul {
+  padding-left: 20px;
+  margin: 0;
+}
+.tab-content li {
+  margin-bottom: 8px;
+}
+.tab-content li span {
+  color: #A0AEC0;
+  font-size: 0.9em;
+}
+
+/* Actions */
+.action-buttons button {
+  background: linear-gradient(90deg, #A485F8, #7F56D9);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-right: 15px;
+}
+
+.action-buttons button:hover {
+  box-shadow: 0 0 15px rgba(164, 133, 248, 0.5);
+}
+
+.action-buttons button:disabled {
+  background: #3a334a;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.timeline-view, .results-view {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #3a334a;
+}
+.timeline-view h4, .results-view h4 {
+  color: #A0AEC0;
+}
+.timeline-step {
+  font-family: 'Courier New', Courier, monospace;
+  color: #3B82F6;
+  margin: 5px 0;
+}
+
+.results-view pre {
+  background-color: #0D0B14;
+  padding: 15px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: #E2E8F0;
+  border: 1px solid #3a334a;
+}

@@ -1,0 +1,70 @@
+/* Similar to RequestCard.css but simplified and adapted for the Link component */
+.case-card-link {
+  text-decoration: none;
+}
+
+.case-card {
+  background: #1A1625;
+  border: 1px solid #3a334a;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: #F5F5F7;
+}
+
+.case-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border-color: #7F56D9;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #3a334a;
+}
+
+.request-id {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.status-eligibility { background: linear-gradient(90deg, #3B82F6, #2563EB); }
+.status-preauth { background: linear-gradient(90deg, #A485F8, #7F56D9); }
+.status-approved { background: linear-gradient(90deg, #10B981, #059669); }
+
+.card-body p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: #E2E8F0;
+}
+
+.card-body p strong {
+  color: #A0AEC0;
+  font-weight: 500;
+  min-width: 70px;
+  display: inline-block;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid #3a334a;
+  font-size: 0.85rem;
+  color: #A0AEC0;
+}
