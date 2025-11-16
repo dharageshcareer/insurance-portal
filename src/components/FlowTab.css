@@ -12,10 +12,45 @@
   padding: 10px;
 }
 
+/* --- NEW: Styles for the Agent Header --- */
+.agent-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background-color: #2d283d;
+  padding: 12px 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid #a485f8;
+}
+
+.agent-icon {
+  font-size: 2rem;
+}
+
+.agent-header-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.agent-header-text span {
+  font-size: 0.8em;
+  color: #a0aec0;
+  text-transform: uppercase;
+}
+
+.agent-header-text strong {
+  font-size: 1.1em;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+/* --- End of New Styles --- */
+
 .flow-event {
   display: flex;
   align-items: flex-start;
   margin-bottom: 20px;
+  padding-left: 10px; /* Indent events under the header */
 }
 
 .flow-event-icon {
