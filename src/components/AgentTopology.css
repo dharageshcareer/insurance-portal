@@ -1,0 +1,33 @@
+.topology-container {
+  width: 100%;
+  height: 500px; /* React Flow needs a defined height */
+  background-color: #0d0b14;
+  border-radius: 8px;
+}
+
+/* Style for the 'input' node type (our root node) */
+.react-flow__node-input {
+  background: #10b981;
+  color: #fff;
+  border: 2px solid #34d399;
+  font-weight: bold;
+}
+
+/* Custom style for agent nodes */
+.agent-node {
+  background: #1f2937;
+  color: #e5e7eb;
+  border: 2px solid #8b5cf6; /* Purple border */
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+/* Custom style for tool nodes */
+.tool-node {
+  background: #1f2937;
+  color: #e5e7eb;
+  border: 2px solid #14b8a6; /* Teal border */
+  padding: 10px;
+  border-radius: 8px;
+}
