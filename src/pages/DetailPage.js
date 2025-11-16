@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { runEligibilityAgent, runPreAuthAgent } from '../services/apiService';
-import AgentWorkflow from '../components/AgentWorkflow'; // Import the new component
+import AgentWorkflow from '../components/AgentWorkflow';
 import './DetailPage.css';
 
 function DetailPage({ cases }) {
@@ -52,7 +52,6 @@ function DetailPage({ cases }) {
       <div className="actions-section section-card">
         <h2>Actions</h2>
         
-        {/* Use the new reusable component for the Eligibility Check */}
         <AgentWorkflow
           title="Step 1: Eligibility Check"
           buttonText="Run Eligibility Agent"
@@ -63,7 +62,6 @@ function DetailPage({ cases }) {
           onStateChange={setIsAgentRunning}
         />
         
-        {/* Use the new reusable component for the Pre-Authorization Check */}
         <AgentWorkflow
           title="Step 2: Pre-Authorization"
           buttonText="Run Pre-Auth Agent"

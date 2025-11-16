@@ -1,0 +1,72 @@
+.flow-placeholder {
+  padding: 20px;
+  text-align: center;
+  color: #a0aec0;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flow-container {
+  padding: 10px;
+}
+
+.flow-event {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.flow-event-icon {
+  font-size: 1.5rem;
+  margin-right: 15px;
+  margin-top: 5px;
+}
+
+.flow-event-content {
+  flex-grow: 1;
+}
+
+.flow-event-content strong {
+  display: block;
+  text-transform: capitalize;
+  font-weight: 600;
+  color: #a485f8;
+  font-size: 1.1em;
+}
+
+.flow-event-content .tool-name {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #0d0b14;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-top: 5px;
+  color: #c7d2fe;
+  border: 1px solid #3a334a;
+  font-size: 0.9em;
+  display: inline-block;
+}
+
+.event-details {
+  margin-top: 8px;
+}
+
+.event-details p {
+  margin: 0 0 5px 0;
+  font-size: 0.9em;
+  color: #a0aec0;
+}
+
+.event-details pre {
+  background-color: #0d0b14;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #3a334a;
+  color: #e2e8f0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 0.85em;
+  max-height: 150px;
+  overflow-y: auto;
+}

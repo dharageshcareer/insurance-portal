@@ -6,7 +6,7 @@ const PREAUTH_AGENT_NAME = process.env.REACT_APP_PREAUTH_AGENT_NAME;
 
 /**
  * A single, generic parser for any ADK agent stream.
- * It correctly identifies tool calls, tool responses, and the final text decision.
+ * It extracts tool arguments and the full tool response for a rich UI.
  * @param {object} eventData - The raw event data from the stream.
  * @returns {object|null} A standardized event object for the UI.
  */
@@ -15,15 +15,21 @@ const parseAgentEvent = (eventData) => {
   if (!part) return null;
 
   if (part.functionCall) {
-    const toolName = part.functionCall.name;
-    return { type: 'tool_call', toolName: toolName, message: `Calling tool...` };
+    return { 
+      type: 'tool_call', 
+      toolName: part.functionCall.name, 
+      args: part.functionCall.args,
+      message: `Calling tool...` 
+    };
   }
   
   if (part.functionResponse) {
-    const toolName = part.functionResponse.name;
-    // Extract the response message, even if it's an error
-    const responseMessage = JSON.stringify(part.functionResponse.response, null, 2);
-    return { type: 'tool_response', toolName: toolName, message: responseMessage };
+    const responseContent = part.functionResponse.response?.result ?? JSON.stringify(part.functionResponse.response, null, 2);
+    return { 
+      type: 'tool_response', 
+      toolName: part.functionResponse.name, 
+      message: responseContent
+    };
   }
   
   if (part.text) {

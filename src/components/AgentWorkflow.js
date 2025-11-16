@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Timeline from './Timeline';
+import FlowTab from './FlowTab';
 import ResultsCard from './ResultsCard';
 import '../components/Loader.css';
-import './AgentWorkflow.css'; // We will create this CSS file next
+import './AgentWorkflow.css'; 
 
 const AgentWorkflow = ({
   title,
@@ -11,59 +11,74 @@ const AgentWorkflow = ({
   caseDetails,
   responseType,
   isDisabled,
-  onStateChange, // Callback to notify the parent of running state
+  onStateChange,
 }) => {
   const [isRunning, setIsRunning] = useState(false);
   const [timelineEvents, setTimelineEvents] = useState([]);
   const [finalResponse, setFinalResponse] = useState(null);
   const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState('flow');
 
   const handleRun = () => {
     if (!caseDetails) return;
 
-    // Reset state and notify parent
     setIsRunning(true);
     setTimelineEvents([]);
     setFinalResponse(null);
     setError(null);
-    onStateChange(true); // Tell the parent we are starting
+    setActiveTab('flow');
+    onStateChange(true);
 
     const handleApiEvent = (event) => {
       setTimelineEvents(prev => [...prev, event]);
       
       if (event.type === 'final_decision' || event.type === 'error') {
-        if (event.type === 'final_decision') setFinalResponse(event.data);
+        if (event.type === 'final_decision') {
+          setFinalResponse(event.data);
+          setActiveTab('decision');
+        }
         if (event.type === 'error') setError(event.message);
         setIsRunning(false);
-        onStateChange(false); // Tell the parent we are done
+        onStateChange(false);
       }
     };
 
     runAgentFunction(caseDetails, handleApiEvent, (errorMessage) => {
       setError(errorMessage);
       setIsRunning(false);
-      onStateChange(false); // Tell the parent we are done (with an error)
+      onStateChange(false);
     });
   };
 
   return (
     <div className="agent-workflow-container">
-      <h3>{title}</h3>
-      <div className="action-buttons">
+      <div className="workflow-header">
+        <h3>{title}</h3>
         <button onClick={handleRun} disabled={isDisabled || isRunning}>
           {isRunning ? 'Running...' : buttonText}
         </button>
       </div>
-
+      
       {error && <p className="error-message">{error}</p>}
       
-      {/* Show timeline only when running and there are events */}
-      {isRunning && timelineEvents.length > 0 && <Timeline events={timelineEvents} />}
-      
-      {/* Show results card only when we have a final response */}
-      {finalResponse && <ResultsCard type={responseType} response={finalResponse} title="Decision" />}
-      
-      {isRunning && <div className="loader" style={{ marginTop: '20px' }}></div>}
+      {(isRunning || finalResponse || error) && (
+        <div className="workflow-tabs">
+          <div className="tab-headers">
+            <button onClick={() => setActiveTab('flow')} className={activeTab === 'flow' ? 'active' : ''}>Processing Flow</button>
+            <button onClick={() => setActiveTab('decision')} className={activeTab === 'decision' ? 'active' : ''} disabled={!finalResponse}>Final Decision</button>
+          </div>
+          <div className="tab-content">
+            {activeTab === 'flow' && <FlowTab events={timelineEvents} />}
+            {activeTab === 'decision' && (
+              finalResponse 
+                ? <ResultsCard type={responseType} response={finalResponse} title="Decision" />
+                : <div className="flow-placeholder">The final decision will be displayed here.</div>
+            )}
+          </div>
+        </div>
+      )}
+       
+      {isRunning && <div className="loader" style={{ marginTop: '20px', alignSelf: 'center' }}></div>}
     </div>
   );
 };

@@ -28,9 +28,7 @@ export const caseData = [
       diagnosis: 'Primary osteoarthritis of the right knee.',
       clinicalHistory: ["Knee osteoarthritis diagnosed in 2022"], // Corresponds to clinical_history
       documents: [
-        { name: 'Initial Consultation Report.pdf', size: '2.1MB' },
-        { name: 'X-Ray Right Knee.dcm', size: '5.4MB' },
-        { name: 'Patient History Form.pdf', size: '800KB' }
+        { name: 'doctor_notes_M001.pdf', size: '2.1MB' }
       ]
     },
   },
