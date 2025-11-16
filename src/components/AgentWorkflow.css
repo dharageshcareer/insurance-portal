@@ -1,0 +1,19 @@
+.agent-workflow-container {
+  /* Add some separation between the two workflow components */
+  border-top: 2px solid #3a334a;
+  padding-top: 20px;
+  margin-top: 20px;
+}
+
+.agent-workflow-container:first-child {
+  /* Remove the top border for the first component */
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.agent-workflow-container h3 {
+  font-size: 1.2rem;
+  color: #E2E8F0;
+  margin-bottom: 15px;
+}
