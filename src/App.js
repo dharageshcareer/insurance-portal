@@ -12,23 +12,21 @@ export const caseData = [
     requestDate: '2025-11-15',
     documents: 5,
     status: 'Eligibility Check',
-    memberId: 'M001',
+    memberId: 'M001', // Corresponds to member_id
     dob: '1985-05-20',
     policyId: 'POL98765',
+    // --- THIS IS THE CRITICAL SECTION TO FIX ---
     serviceDetails: {
-      dateOfService: '2025-11-20',
-      cptCode: '99213',
-      icdCodes: ['M17.11'],
-      hospitalName: 'Unity General Hospital'
+      date_of_service: "2025-04-10",
+      cpt_code: "99213",
+      icd_codes: ["M17.11"],
+      provider_npi: "1427683920", // Added this required field
+      place_of_service: "OPD"       // Added this required field
     },
     clinicalDetails: {
-      symptoms: 'Chronic knee pain, difficulty walking, swelling.',
+      symptoms: "Chronic knee pain", // Corresponds to symptoms
       diagnosis: 'Primary osteoarthritis of the right knee.',
-      clinicalHistory: [
-        'Knee osteoarthritis diagnosed in 2022.', 
-        'Patient has tried physical therapy and corticosteroid injections with minimal relief.',
-        'No history of knee surgery.'
-      ],
+      clinicalHistory: ["Knee osteoarthritis diagnosed in 2022"], // Corresponds to clinical_history
       documents: [
         { name: 'Initial Consultation Report.pdf', size: '2.1MB' },
         { name: 'X-Ray Right Knee.dcm', size: '5.4MB' },

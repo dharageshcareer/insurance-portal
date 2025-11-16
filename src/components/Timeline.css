@@ -1,0 +1,74 @@
+.timeline-container {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #3a334a;
+}
+
+.timeline-container h4 {
+  color: #A0AEC0;
+  margin-bottom: 15px;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 40px;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.timeline-item:before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  top: 5px;
+  height: 100%;
+  width: 2px;
+  background: #3a334a;
+}
+.timeline-item:last-child:before {
+  display: none;
+}
+
+.timeline-icon {
+  position: absolute;
+  left: -35px;
+  top: 0;
+  font-size: 1.2rem;
+  background-color: #1A1625;
+  padding: 5px;
+  border-radius: 50%;
+}
+
+.timeline-content {
+  color: #E2E8F0;
+}
+
+.timeline-content strong {
+  display: block;
+  text-transform: capitalize;
+  font-weight: 600;
+  color: #A485F8;
+}
+
+.timeline-content p {
+  margin: 5px 0 0 0;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9em;
+  color: #A0AEC0;
+}
+.timeline-content .tool-name {
+  display: block;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #0D0B14;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-top: 5px;
+  color: #c7d2fe; /* A light indigo color */
+  border: 1px solid #3a334a;
+  font-size: 0.9em;
+}

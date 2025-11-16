@@ -1,66 +1,70 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; // <-- THIS LINE IS NOW FIXED
 import { useParams, Link } from 'react-router-dom';
+import { runEligibilityAgent } from '../services/apiService';
+import Timeline from '../components/Timeline';
+import ResultsCard from '../components/ResultsCard';
 import './DetailPage.css';
-import '../components/Loader.css'; // For the loading spinner
+import '../components/Loader.css';
 
 function DetailPage({ cases }) {
   const { requestId } = useParams();
   const [caseDetails, setCaseDetails] = useState(null);
   const [activeTab, setActiveTab] = useState('diagnosis');
 
-  const [isChecking, setIsChecking] = useState(false);
-  const [timelineSteps, setTimelineSteps] = useState([]);
+  // State for the entire workflow
+  const [isLoading, setIsLoading] = useState(false);
+  const [timelineEvents, setTimelineEvents] = useState([]);
   const [finalResponse, setFinalResponse] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const details = cases.find(c => c.requestId === requestId);
     setCaseDetails(details);
   }, [requestId, cases]);
 
-  const runEligibilityCheck = async () => {
-    setIsChecking(true);
-    setFinalResponse(null);
-    setTimelineSteps([]);
+  const handleRunEligibility = () => {
+    if (!caseDetails) return;
 
-    // Simulate API call and intermediate steps
-    setTimelineSteps(prev => [...prev, ">> Agent is calling tool 'get_member_and_policy_data'..."]);
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setTimelineSteps(prev => [...prev, ">> Agent received response from tool 'get_member_and_policy_data'."]);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Final response
-    const response = {
-      "eligibility_status": "eligible",
-      "pre_auth_required": false,
-      "coverage_details": {
-        "balance_coverage": 500000,
-        "room_rent_limit": {
-          "private_room_per_day": 5000,
-          "icu_per_day": 10000,
-          "notes": "Covers a standard private room. Luxury suites are excluded."
-        },
-        "notes": "Balance coverage indicates the total sum insured for the policy year."
-      },
-      "patient_financial_responsibility": { "copay": 20 },
-      "adjudication_rationale": "Adjudication complete. 1. Member Status: Verified as 'Active'. 2. Waiting Period: The 30-day waiting period is met. 3. CPT Code Coverage: CPT '99213' is a covered OPD service. 4. Medical Necessity: ICD code 'M17.11' is allowed for this service, confirming medical necessity. 5. Pre-authorization: Policy rules confirm pre-auth is not required. 6. Financials: A $20 OPD copay is applicable for this service. The service is deemed eligible."
+    // Reset state for a new run
+    setIsLoading(true);
+    setTimelineEvents([]);
+    setFinalResponse(null);
+    setError(null);
+
+    // Define the callback for handling events from the API service
+    const handleApiEvent = (event) => {
+      setTimelineEvents(prev => [...prev, event]);
+      
+      if (event.type === 'final_decision') {
+        setFinalResponse(event.data);
+        setIsLoading(false);
+      } else if (event.type === 'error') {
+        setError(event.message);
+        setIsLoading(false);
+      }
     };
-    
-    setFinalResponse(response);
-    setIsChecking(false);
+
+    // Define the callback for handling fatal errors
+    const handleApiError = (errorMessage) => {
+      setError(errorMessage);
+      setIsLoading(false);
+    };
+
+    // Call the new agent workflow
+    runEligibilityAgent(caseDetails, handleApiEvent, handleApiError);
   };
 
   if (!caseDetails) {
     return <div className="loading">Loading case details...</div>;
   }
-
-  const { clinicalDetails } = caseDetails;
+  
+  const preAuthIsRequired = finalResponse?.pre_auth_required === true;
 
   return (
     <div className="detail-page">
       <Link to="/" className="back-link">&larr; Back to Dashboard</Link>
       
-      {/* Patient Overview */}
+      {/* Patient Overview section */}
       <div className="patient-overview section-card">
         <h2>Patient Overview</h2>
         <div className="overview-grid">
@@ -71,7 +75,7 @@ function DetailPage({ cases }) {
         </div>
       </div>
 
-      {/* Specialization Tabs */}
+      {/* Specialization Tabs section */}
       <div className="specialization-tabs section-card">
         <div className="tab-headers">
           <button onClick={() => setActiveTab('diagnosis')} className={activeTab === 'diagnosis' ? 'active' : ''}>Diagnosis</button>
@@ -79,34 +83,29 @@ function DetailPage({ cases }) {
           <button onClick={() => setActiveTab('documents')} className={activeTab === 'documents' ? 'active' : ''}>Documents Submitted</button>
         </div>
         <div className="tab-content">
-          {activeTab === 'diagnosis' && <div><h4>Primary Diagnosis</h4><p>{clinicalDetails.diagnosis}</p><h4>Symptoms</h4><p>{clinicalDetails.symptoms}</p></div>}
-          {activeTab === 'summary' && <ul>{clinicalDetails.clinicalHistory.map((item, index) => <li key={index}>{item}</li>)}</ul>}
-          {activeTab === 'documents' && <ul>{clinicalDetails.documents.map((doc, index) => <li key={index}>{doc.name} <span>({doc.size})</span></li>)}</ul>}
+          {activeTab === 'diagnosis' && <div><h4>Primary Diagnosis</h4><p>{caseDetails.clinicalDetails.diagnosis}</p><h4>Symptoms</h4><p>{caseDetails.clinicalDetails.symptoms}</p></div>}
+          {activeTab === 'summary' && <ul>{caseDetails.clinicalDetails.clinicalHistory.map((item, index) => <li key={index}>{item}</li>)}</ul>}
+          {activeTab === 'documents' && <ul>{caseDetails.clinicalDetails.documents.map((doc, index) => <li key={index}>{doc.name} <span>({doc.size})</span></li>)}</ul>}
         </div>
       </div>
 
-      {/* Actions & Results */}
+      {/* --- ACTIONS & RESULTS SECTION --- */}
       <div className="actions-section section-card">
         <h2>Actions</h2>
         <div className="action-buttons">
-          <button onClick={runEligibilityCheck} disabled={isChecking}>Run Eligibility Check</button>
-          <button disabled={isChecking}>Run Pre-Auth Check</button>
+          <button onClick={handleRunEligibility} disabled={isLoading}>
+            {isLoading ? 'Agent is Running...' : 'Run Eligibility Agent'}
+          </button>
+          <button disabled={!preAuthIsRequired || isLoading}>Run Pre-Auth Agent</button>
         </div>
-        
-        {isChecking && (
-          <div className="timeline-view">
-            <h4>Processing Steps:</h4>
-            {timelineSteps.map((step, index) => <p key={index} className="timeline-step">{step}</p>)}
-            <div className="loader"></div>
-          </div>
-        )}
 
-        {finalResponse && (
-          <div className="results-view">
-            <h4>Final Decision</h4>
-            <pre>{JSON.stringify(finalResponse, null, 2)}</pre>
-          </div>
-        )}
+        {error && <p className="error-message">{error}</p>}
+        
+        <Timeline events={timelineEvents} />
+        
+        {finalResponse && <ResultsCard response={finalResponse} title="Eligibility Check Decision" />}
+
+        {isLoading && <div className="loader" style={{ marginTop: '20px' }}></div>}
       </div>
     </div>
   );
