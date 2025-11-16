@@ -1,28 +1,14 @@
 .agent-workflow-container {
-  border-top: 2px solid #3a334a;
-  padding-top: 20px;
-  margin-top: 20px;
   display: flex;
   flex-direction: column;
 }
 
-.agent-workflow-container:first-child {
-  border-top: none;
-  margin-top: 0;
-  padding-top: 0;
-}
-
 .workflow-header {
   display: flex;
-  justify-content: space-between;
+  /* Align button to the right */
+  justify-content: flex-end;
   align-items: center;
   margin-bottom: 20px;
-}
-
-.workflow-header h3 {
-  font-size: 1.2rem;
-  color: #e2e8f0;
-  margin: 0;
 }
 
 .workflow-header button {
@@ -47,16 +33,20 @@
     box-shadow: none;
 }
 
-/* --- TAB STYLES --- */
+/* --- Internal Tab Styles --- */
 .workflow-tabs {
   margin-top: 10px;
+  border: 1px solid #3a334a;
+  border-radius: 8px;
 }
 
 .tab-headers {
   display: flex;
   gap: 10px;
+  background-color: #0d0b14;
+  padding: 5px 5px 0 5px;
   border-bottom: 1px solid #3a334a;
-  margin-bottom: 20px;
+  border-radius: 8px 8px 0 0;
 }
 
 .tab-headers button {
@@ -65,7 +55,7 @@
   background: transparent;
   color: #a0aec0;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
   border-bottom: 3px solid transparent;
   transition: all 0.3s ease;
@@ -73,7 +63,9 @@
 
 .tab-headers button.active {
   color: #a485f8;
+  background-color: #1a1625;
   border-bottom: 3px solid #a485f8;
+  border-radius: 6px 6px 0 0;
 }
 
 .tab-headers button:disabled {
@@ -83,6 +75,7 @@
 
 .tab-content {
   background-color: #1a1625;
-  border-radius: 8px;
+  border-radius: 0 0 8px 8px;
   padding: 5px;
+  min-height: 200px;
 }

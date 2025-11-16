@@ -8,7 +8,7 @@
 .back-link {
   display: inline-block;
   margin-bottom: 25px;
-  color: #A485F8;
+  color: #a485f8;
   text-decoration: none;
   font-weight: 500;
 }
@@ -17,7 +17,7 @@
 }
 
 .section-card {
-  background: #1A1625;
+  background: #1a1625;
   border: 1px solid #3a334a;
   border-radius: 12px;
   padding: 25px;
@@ -28,7 +28,7 @@
   margin-top: 0;
   font-size: 1.5rem;
   color: #fff;
-  background: linear-gradient(90deg, #A485F8, #7F56D9);
+  background: linear-gradient(90deg, #a485f8, #7f56d9);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   padding-bottom: 10px;
@@ -44,103 +44,77 @@
 
 .overview-grid p, .tab-content p {
   margin: 0;
-  color: #E2E8F0;
+  color: #e2e8f0;
 }
 
 .overview-grid p strong {
-  color: #A0AEC0;
+  color: #a0aec0;
   font-weight: 500;
 }
 
-/* Tabs */
-.tab-headers {
+/* Tabs for Case Details */
+.specialization-tabs .tab-headers {
   display: flex;
   gap: 10px;
   border-bottom: 1px solid #3a334a;
   margin-bottom: 20px;
 }
-
-.tab-headers button {
+.specialization-tabs .tab-headers button {
   padding: 10px 20px;
   border: none;
   background: transparent;
-  color: #A0AEC0;
+  color: #a0aec0;
   cursor: pointer;
   font-size: 1rem;
   font-weight: 500;
   border-bottom: 3px solid transparent;
   transition: all 0.3s ease;
 }
-
-.tab-headers button.active {
-  color: #A485F8;
-  border-bottom: 3px solid #A485F8;
+.specialization-tabs .tab-headers button.active {
+  color: #a485f8;
+  border-bottom: 3px solid #a485f8;
 }
 
-.tab-content {
-  min-height: 100px;
-  color: #E2E8F0;
-}
-.tab-content h4 {
-  color: #A0AEC0;
-  margin-bottom: 8px;
-}
-.tab-content ul {
-  padding-left: 20px;
-  margin: 0;
-}
-.tab-content li {
-  margin-bottom: 8px;
-}
-.tab-content li span {
-  color: #A0AEC0;
-  font-size: 0.9em;
+.tab-content { min-height: 100px; color: #e2e8f0; }
+.tab-content h4 { color: #a0aec0; margin-bottom: 8px; }
+.tab-content ul { padding-left: 20px; margin: 0; }
+.tab-content li { margin-bottom: 8px; }
+.tab-content li span { color: #a0aec0; font-size: 0.9em; }
+
+/* --- NEW: Top-Level Agent Tab Styles --- */
+.agent-tabs-header {
+  display: flex;
+  border-bottom: 2px solid #3a334a;
+  margin-bottom: 20px;
 }
 
-/* Actions */
-.action-buttons button {
-  background: linear-gradient(90deg, #A485F8, #7F56D9);
-  color: white;
-  border: none;
+.agent-tabs-header button {
   padding: 12px 25px;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
+  border: none;
+  background: transparent;
+  color: #a0aec0;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-right: 15px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: -2px; /* Pull the active border over the main border */
+  border-bottom: 2px solid transparent;
 }
 
-.action-buttons button:hover {
-  box-shadow: 0 0 15px rgba(164, 133, 248, 0.5);
+.agent-tabs-header button.active {
+  color: #e2e8f0;
+  border-bottom: 2px solid #a485f8;
 }
 
-.action-buttons button:disabled {
-  background: #3a334a;
+.agent-tabs-header button:disabled {
+  color: #6b7280;
   cursor: not-allowed;
-  box-shadow: none;
 }
 
-.timeline-view, .results-view {
-  margin-top: 25px;
-  padding-top: 20px;
-  border-top: 1px solid #3a334a;
-}
-.timeline-view h4, .results-view h4 {
-  color: #A0AEC0;
-}
-.timeline-step {
-  font-family: 'Courier New', Courier, monospace;
-  color: #3B82F6;
-  margin: 5px 0;
-}
-
-.results-view pre {
-  background-color: #0D0B14;
-  padding: 15px;
-  border-radius: 8px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  color: #E2E8F0;
-  border: 1px solid #3a334a;
+.error-message {
+  color: #ef4444;
+  margin-top: 15px;
+  background-color: rgba(239, 68, 68, 0.1);
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ef4444;
 }
