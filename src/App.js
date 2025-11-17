@@ -7,59 +7,67 @@ import './App.css';
 // Mock data that both pages can access. In a real app, this would come from a state manager or API.
 export const caseData = [
   {
-    requestId: 'REQ7512',
-    patientName: 'John Doe',
-    requestDate: '2025-11-15',
-    documents: 5,
-    status: 'Eligibility Check',
-    memberId: 'M001', // Corresponds to member_id
-    dob: '1985-05-20',
+    requestId: 'AUTH-2024-001',
+    procedure: 'Total Knee Arthroplasty (TKA)',
+    status: 'Approved',
+    priority: 'Routine', // <--- THIS FIELD WAS MISSING
+    confidence: 94,
+    submitted: {
+        date: '1/15/2024',
+        time: '3:00:00 PM',
+    },
+    metrics: {
+        processingTime: '9m 15s',
+        documents: 5, // This was missing in the previous data for CaseCard
+        agents: 7,
+    },
+    patient: {
+      name: 'Margaret Chen',
+      age: 67,
+      mrn: 'MRN-847392',
+    },
+    insurance: {
+      provider: 'Blue Cross Blue Shield PPO',
+      planId: 'BCBS-TX-8473921',
+    },
+    // Keep the detailed data needed for the detail page
+    memberId: 'M001',
+    dob: '1957-05-20',
     policyId: 'POL98765',
-    // --- THIS IS THE CRITICAL SECTION TO FIX ---
-    serviceDetails: {
-      date_of_service: "2025-04-10",
-      cpt_code: "99213",
-      icd_codes: ["M17.11"],
-      provider_npi: "1427683920", // Added this required field
-      place_of_service: "OPD"       // Added this required field
-    },
-    clinicalDetails: {
-      symptoms: "Chronic knee pain", // Corresponds to symptoms
-      diagnosis: 'Primary osteoarthritis of the right knee.',
-      clinicalHistory: ["Knee osteoarthritis diagnosed in 2022"], // Corresponds to clinical_history
-      documents: [
-        { name: 'doctor_notes_M001.pdf', size: '2.1MB' }
-      ]
-    },
+    serviceDetails: { date_of_service: "2025-04-10", cpt_code: "27447", icd_codes: ["M17.11"], provider_npi: "1427683920", place_of_service: "OPD" },
+    clinicalDetails: { symptoms: "Chronic knee pain", diagnosis: 'Primary osteoarthritis of the right knee.', clinicalHistory: ["Knee osteoarthritis diagnosed in 2022", "Failed conservative treatments"], documents: [ { name: 'doctor_notes_M001.pdf', size: '2.1MB' }, { name: 'xray_report_M001.pdf', size: '5.4MB' } ] },
   },
   {
-    requestId: 'REQ7513',
-    patientName: 'Jane Smith',
-    requestDate: '2025-11-14',
-    documents: 3,
-    status: 'Pre-auth',
-    memberId: 'M002',
-    dob: '1992-09-15',
-    policyId: 'POL12345',
-    serviceDetails: {
-      dateOfService: '2025-11-18',
-      cptCode: '88305',
-      icdCodes: ['D22.5', 'Z01.818'],
-      hospitalName: 'City Central Clinic'
+    requestId: 'AUTH-2024-002',
+    procedure: 'Cardiac Catheterization with Possible PCI',
+    status: 'Pending Info',
+    priority: 'Urgent', // <--- THIS FIELD WAS MISSING
+    confidence: 91,
+    submitted: {
+        date: '1/16/2024',
+        time: '11:30:00 AM',
     },
-    clinicalDetails: {
-      symptoms: 'Atypical mole on the left arm, recent changes in color and size.',
-      diagnosis: 'Atypical nevus of skin of left upper limb.',
-      clinicalHistory: [
-        'Patient has a family history of melanoma.',
-        'The lesion has been present for several years but has grown in the last 3 months.',
-      ],
-      documents: [
-        { name: 'Dermatology Referral.pdf', size: '1.2MB' },
-        { name: 'Clinical Photo Lesion.jpg', size: '3.5MB' },
-      ]
-    }
-  }
+    metrics: {
+        processingTime: '4m 10s',
+        documents: 3,
+        agents: 4,
+    },
+    patient: {
+      name: 'Robert Williams',
+      age: 58,
+      mrn: 'MRN-923847',
+    },
+    insurance: {
+      provider: 'Aetna HMO',
+      planId: 'AETNA-NY-923847',
+    },
+    // Keep the detailed data
+    memberId: 'M002',
+    dob: '1966-09-15',
+    policyId: 'POL12345',
+    serviceDetails: { date_of_service: "2025-04-12", cpt_code: "99203", icd_codes: ["I25.10"], provider_npi: "1427683921", place_of_service: "Hospital" },
+    clinicalDetails: { symptoms: "Chest pain and shortness of breath", diagnosis: 'Atherosclerotic heart disease', clinicalHistory: ["History of hypertension"], documents: [ { name: 'cardiologist_report_M002.pdf', size: '1.8MB' } ] },
+  },
 ];
 
 

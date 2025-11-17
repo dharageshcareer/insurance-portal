@@ -1,14 +1,13 @@
 import React from 'react';
 import './ResultsCard.css';
 
-// A small helper component for displaying boolean/status values nicely
 const StatusPill = ({ text, type }) => (
   <span className={`status-pill ${type}`}>
     {text}
   </span>
 );
 
-// This component now uses optional chaining (?.) to prevent crashes
+// This view is for the detailed Eligibility response
 const EligibilityView = ({ response }) => {
   const statusClass = response.eligibility_status === 'eligible' ? 'status-eligible' : 'status-denied';
   return (
@@ -21,29 +20,19 @@ const EligibilityView = ({ response }) => {
         <strong>Pre-Auth Required</strong>
         <StatusPill text={response.pre_auth_required ? 'Yes' : 'No'} type={response.pre_auth_required ? 'not-covered' : 'covered'}/>
       </div>
-      
-      {/* --- Service Coverage Details Section --- */}
       {response.coverage_details && (
         <div className="result-item full-width">
           <strong>Service Coverage Details</strong>
           <div className="details-table">
-            {/* Safely access nested properties */}
             <div><span>Description</span><span>{response.coverage_details?.description} (CPT: {response.coverage_details?.cpt_code})</span></div>
             <div><span>Covered</span><StatusPill text={response.coverage_details?.covered ? 'Yes' : 'No'} type={response.coverage_details?.covered ? 'covered' : 'not-covered'} /></div>
           </div>
         </div>
       )}
-      
-      {/* --- Patient Financials Section --- */}
       {response.patient_financial_responsibility && (
          <div className="result-item full-width">
           <strong>Patient Financials</strong>
           <div className="details-table">
-              {/* 
-                THE FIX IS HERE: We use "?." to safely access each property.
-                If `deductible_remaining` is undefined, it will not try to call .toLocaleString() and will not crash.
-                The "?? 'N/A'" part means "if the value is null or undefined, display 'N/A' instead".
-              */}
               <div><span>Copay Due</span><span>${response.patient_financial_responsibility?.copay_due?.toLocaleString() ?? 'N/A'}</span></div>
               <div><span>Coinsurance</span><span>{response.patient_financial_responsibility?.coinsurance ?? 'N/A'}</span></div>
               <div><span>Deductible Remaining</span><span>${response.patient_financial_responsibility?.deductible_remaining?.toLocaleString() ?? 'N/A'}</span></div>
@@ -51,7 +40,6 @@ const EligibilityView = ({ response }) => {
           </div>
         </div>
       )}
-      
       <div className="result-item full-width rationale">
         <strong>Adjudication Rationale</strong>
         <p>{response.adjudication_rationale}</p>
@@ -60,7 +48,8 @@ const EligibilityView = ({ response }) => {
   );
 };
 
-const PreAuthView = ({ response }) => {
+// This view is for Pre-Auth responses that have a "decision" and "reasoning"
+const PreAuthDecisionView = ({ response }) => {
   const decisionType = response.decision?.toLowerCase() || 'denied';
   return (
     <div className="results-grid-single">
@@ -76,14 +65,40 @@ const PreAuthView = ({ response }) => {
   );
 };
 
-const ResultsCard = ({ response, title, type = 'eligibility' }) => {
+// --- NEW ---
+// This view is for Pre-Auth responses that are a "clinical summary"
+
+
+
+const ResultsCard = ({ response, title, type }) => {
   if (!response) return null;
   
+  // --- THIS IS THE NEW INTELLIGENT LOGIC ---
+  const renderContent = () => {
+    if (type === 'eligibility') {
+      return <EligibilityView response={response} />;
+    }
+    
+    if (type === 'preauth') {
+      // Check which type of pre-auth response we have
+      if (response.decision && response.reasoning) {
+        return <PreAuthDecisionView response={response} />;
+      }
+    }
+    
+    // Fallback for any unknown response structure
+    return (
+        <div className="result-item rationale">
+            <strong>Raw Agent Output</strong>
+            <pre>{JSON.stringify(response, null, 2)}</pre>
+        </div>
+    );
+  };
+
   return (
     <div className="results-card">
       <h4>{title}</h4>
-      {type === 'eligibility' && <EligibilityView response={response} />}
-      {type === 'preauth' && <PreAuthView response={response} />}
+      {renderContent()}
     </div>
   );
 };

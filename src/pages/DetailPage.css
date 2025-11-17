@@ -1,8 +1,10 @@
 .detail-page {
-  max-width: 900px;
+  max-width: auto;
   margin: 0 auto;
   text-align: left;
   padding-bottom: 50px;
+  padding-left: 10%;
+    padding-right: 10%;
 }
 
 .back-link {
