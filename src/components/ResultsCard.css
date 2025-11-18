@@ -18,6 +18,12 @@
   gap: 20px;
 }
 
+.results-grid-single {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .result-item {
   background: #0D0B14;
   padding: 15px;
@@ -50,16 +56,20 @@
   padding: 3px 8px;
   border-radius: 6px;
   color: #fff;
+  text-transform: capitalize;
 }
 .result-status.status-eligible { background-color: #059669; }
+.result-status.status-not_eligible { background-color: #DC2626; }
 .result-status.status-denied { background-color: #DC2626; }
 
-.result-item.rationale p {
+
+.result-item.rationale p, .result-item.rationale pre {
   font-size: 0.95em;
   line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
-/* --- NEW STYLES --- */
 .status-pill {
   font-size: 0.9em;
   font-weight: 500;
@@ -99,4 +109,46 @@
 .details-table > div span:last-child {
   font-weight: 500;
   color: #E2E8F0; /* Value color */
+}
+
+.details-table > div strong {
+    font-weight: 700;
+    font-size: 1.1em;
+    color: #fff;
+}
+
+/* --- NEW STYLES for the Adjudication Rationale List --- */
+.rationale-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.rationale-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 5px;
+  border-bottom: 1px solid #2d283d;
+}
+
+.rationale-item:last-child {
+  border-bottom: none;
+}
+
+.rationale-status {
+  margin-right: 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.rationale-status.met { color: #10b981; } /* Green checkmark */
+.rationale-status.not-met { color: #ef4444; } /* Red cross */
+
+.rationale-condition {
+  color: #cbd5e1;
+  font-size: 0.9em;
+  line-height: 1.5;
 }

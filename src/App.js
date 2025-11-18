@@ -4,72 +4,43 @@ import Dashboard from './pages/Dashboard';
 import DetailPage from './pages/DetailPage';
 import './App.css';
 
-// Mock data that both pages can access. In a real app, this would come from a state manager or API.
 export const caseData = [
   {
+    // High-level data for dashboard/overview
     requestId: 'AUTH-2024-001',
     procedure: 'Total Knee Arthroplasty (TKA)',
-    status: 'Approved',
-    priority: 'Routine', // <--- THIS FIELD WAS MISSING
-    confidence: 94,
-    submitted: {
-        date: '1/15/2024',
-        time: '3:00:00 PM',
+    status: 'In Progress',
+    priority: 'Routine',
+    confidence: 0,
+    submitted: { date: '1/15/2024', time: '3:00:00 PM' },
+    metrics: { processingTime: 'N/A', documents: 2, agents: 0 },
+
+    // Detailed data for the new Eligibility payload
+    patient_payload: { "firstName": "Michael", "lastName": "Lee", "dateOfBirth": "1978-11-05", "gender": "M", "contactNumber": "+1-555-333-7777", "emailId": "michael.lee@example.com" },
+    insurance_payload: { "payerName": "Blue Cross Bronze PPO", "memberId": "M003", "policyNumber": "POL555666777" },
+    provider_payload: { "providerName": "Sunrise Hospital", "facilityNPI": "3344556677", "renderingPhysician": "Dr. Robert Kim", "physicianNPI": "8877665544" },
+    serviceDetails_payload: { "dateOfService": "2025-06-15", "typeOfService": "Inpatient", "cptCode": "27447", "diagnosisCode": "M17.11" },
+    clinical_payload: { "vitals": { "bloodPressure": "130/85", "heartRate": 82, "temperature": "99.0F", "respiratoryRate": 18, "spo2": "96%" }, "diagnosisList": [ { "icdCode": "M17.11", "description": "Unilateral primary osteoarthritis", "primary": true } ], "clinicalNotes": "Severe knee pain requiring surgery.", "medicalHistory": { "pastConditions": ["Hypertension"], "currentMedications": ["Lisinopril 10mg"] } },
+    
+    // Data for the Pre-Auth payload and other UI parts
+    memberId: 'M001', // Corresponds to the pre-auth payload member_id
+    serviceDetails: { cpt_code: "27447" },
+    clinicalDetails: { 
+      symptoms: "Severe knee pain",
+      diagnosis: 'Unilateral primary osteoarthritis',
+      clinicalHistory: ["Hypertension"],
+      // --- THIS IS THE UPDATED DOCUMENT STRUCTURE ---
+      documents: [ 
+        { "documentType": "Clinical Notes", "fileName": "doctor_notes_M001.pdf" }, 
+        { "documentType": "Imaging Report", "fileName": "xray_report_M001.pdf" } 
+      ] 
     },
-    metrics: {
-        processingTime: '9m 15s',
-        documents: 5, // This was missing in the previous data for CaseCard
-        agents: 7,
-    },
-    patient: {
-      name: 'Margaret Chen',
-      age: 67,
-      mrn: 'MRN-847392',
-    },
-    insurance: {
-      provider: 'Blue Cross Blue Shield PPO',
-      planId: 'BCBS-TX-8473921',
-    },
-    // Keep the detailed data needed for the detail page
-    memberId: 'M001',
-    dob: '1957-05-20',
-    policyId: 'POL98765',
-    serviceDetails: { date_of_service: "2025-04-10", cpt_code: "27447", icd_codes: ["M17.11"], provider_npi: "1427683920", place_of_service: "OPD" },
-    clinicalDetails: { symptoms: "Chronic knee pain", diagnosis: 'Primary osteoarthritis of the right knee.', clinicalHistory: ["Knee osteoarthritis diagnosed in 2022", "Failed conservative treatments"], documents: [ { name: 'doctor_notes_M001.pdf', size: '2.1MB' }, { name: 'xray_report_M001.pdf', size: '5.4MB' } ] },
-  },
-  {
-    requestId: 'AUTH-2024-002',
-    procedure: 'Cardiac Catheterization with Possible PCI',
-    status: 'Pending Info',
-    priority: 'Urgent', // <--- THIS FIELD WAS MISSING
-    confidence: 91,
-    submitted: {
-        date: '1/16/2024',
-        time: '11:30:00 AM',
-    },
-    metrics: {
-        processingTime: '4m 10s',
-        documents: 3,
-        agents: 4,
-    },
-    patient: {
-      name: 'Robert Williams',
-      age: 58,
-      mrn: 'MRN-923847',
-    },
-    insurance: {
-      provider: 'Aetna HMO',
-      planId: 'AETNA-NY-923847',
-    },
-    // Keep the detailed data
-    memberId: 'M002',
-    dob: '1966-09-15',
-    policyId: 'POL12345',
-    serviceDetails: { date_of_service: "2025-04-12", cpt_code: "99203", icd_codes: ["I25.10"], provider_npi: "1427683921", place_of_service: "Hospital" },
-    clinicalDetails: { symptoms: "Chest pain and shortness of breath", diagnosis: 'Atherosclerotic heart disease', clinicalHistory: ["History of hypertension"], documents: [ { name: 'cardiologist_report_M002.pdf', size: '1.8MB' } ] },
+
+    // Data for the Detail Page Overview
+    patient: { name: 'Michael Lee', age: 47, mrn: 'MRN-847392' },
+    insurance: { provider: 'Blue Cross Bronze PPO', planId: 'BCBS-TX-8473921' },
   },
 ];
-
 
 function App() {
   return (
