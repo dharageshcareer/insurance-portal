@@ -5,6 +5,8 @@ import AgentWorkflow from '../components/AgentWorkflow';
 import CaseOverview from '../components/CaseOverview';
 import './DetailPage.css';
 
+import ChatWidget from '../components/ChatWidget';
+
 // A small, reusable component to display a block of details
 const DetailBlock = ({ title, data }) => {
     if (!data) return null;
@@ -107,6 +109,8 @@ function DetailPage() {
                     {activeAgentTab === 'preauth' && <AgentWorkflow buttonText="Run Pre-Auth Agent" runAgentFunction={runPreAuthAgent} caseDetails={caseDetails} responseType="preauth" isDisabled={isAgentRunning} onStateChange={setIsAgentRunning} />}
                 </div>
             </div>
+        
+            <ChatWidget memberId={caseDetails.insurance.memberId}></ChatWidget>
         </div>
     );
 }
