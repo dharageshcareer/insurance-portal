@@ -3,6 +3,7 @@ const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const USER_ID = process.env.REACT_APP_USER_ID;
 const ELIGIBILITY_AGENT_NAME = process.env.REACT_APP_ELIGIBILITY_AGENT_NAME;
 const PREAUTH_AGENT_NAME = process.env.REACT_APP_PREAUTH_AGENT_NAME;
+const CHATBOT_AGENT_NAME = process.env.REACT_APP_CHATBOT_AGENT_NAME;
 
 // --- NEW: Mocked Backend Data ---
 // In a real app, this data would be in a database.
@@ -69,4 +70,91 @@ export const runPreAuthAgent = async (caseDetails, onEvent, onComplete, onError)
         ]
     };
     await runAgentWorkflow(PREAUTH_AGENT_NAME, preAuthRequest, onEvent, onComplete, onError);
+};
+
+
+// --- VVVV ADD THIS ENTIRE NEW CHAT SECTION TO THE END OF THE FILE VVVV ---
+
+/**
+ * Parses events from the chatbot agent stream.
+ * It's simpler as it only looks for the final text response.
+ * @param {object} eventData The raw event data from the stream.
+ * @returns {object|null} A standardized event object for the UI.
+ */
+const parseChatEvent = (eventData) => {
+    const part = eventData?.content?.parts?.[0];
+    if (part?.text) {
+        return { type: 'text', message: part.text };
+    }
+    return null;
+};
+
+/**
+ * Creates a new chat session with the chatbot agent.
+ * @returns {string|null} The new session ID, or null on failure.
+ */
+export const createChatSession = async () => {
+    const sessionId = `session-chat-${USER_ID}-${Date.now()}`;
+    const sessionUrl = `${BASE_URL}/apps/${CHATBOT_AGENT_NAME}/users/${USER_ID}/sessions/${sessionId}`;
+    try {
+        const response = await fetch(sessionUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) });
+        if (!response.ok) throw new Error(`Failed to create chat session. Status: ${response.status}`);
+        return sessionId;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
+/**
+ * Sends a message to the chatbot and streams the response.
+ * @param {string} message - The text message from the user.
+ * @param {string} sessionId - The current active chat session ID.
+ * @param {function} onChunk - A callback that receives each piece of the agent's text response.
+ * @param {function} onComplete - A callback that fires when the stream is fully complete.
+ * @param {function} onError - A callback for any fatal errors.
+ */
+export const sendChatMessage = async (message, sessionId, onChunk, onComplete, onError) => {
+    const streamPayload = {
+        appName: CHATBOT_AGENT_NAME,
+        userId: USER_ID,
+        sessionId: sessionId,
+        newMessage: { role: "user", parts: [{ "text": message }] },
+        // The "streaming: true" flag has been REMOVED.
+    };
+
+    try {
+        const response = await fetch(`${BASE_URL}/run_sse`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(streamPayload) });
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) {
+                onComplete(); // The stream has finished
+                break;
+            }
+
+            const chunk = decoder.decode(value);
+            const lines = chunk.split('\n');
+
+            for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                    const eventDataStr = line.substring('data: '.length);
+                    if (!eventDataStr) continue;
+                    try {
+                        const eventData = JSON.parse(eventDataStr);
+                        const chatEvent = parseChatEvent(eventData);
+                        if (chatEvent) {
+                            onChunk(chatEvent.message); // Send the text chunk to the UI
+                        }
+                    } catch (e) { /* Ignore non-JSON lines */ }
+                }
+            }
+        }
+    } catch (error) {
+        onError(error.message);
+    }
 };

@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { getRequestDetails, runEligibilityAgent, runPreAuthAgent } from '../services/apiService';
 import AgentWorkflow from '../components/AgentWorkflow';
 import CaseOverview from '../components/CaseOverview';
+import ChatWidget from '../components/ChatWidget';
 import './DetailPage.css';
 
 // A small, reusable component to display a block of details
@@ -107,7 +108,9 @@ function DetailPage() {
                     {activeAgentTab === 'preauth' && <AgentWorkflow buttonText="Run Pre-Auth Agent" runAgentFunction={runPreAuthAgent} caseDetails={caseDetails} responseType="preauth" isDisabled={isAgentRunning} onStateChange={setIsAgentRunning} />}
                 </div>
             </div>
+            <ChatWidget memberId={caseDetails.insurance.memberId} />
         </div>
+        
     );
 }
 
