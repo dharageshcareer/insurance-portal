@@ -4,42 +4,38 @@ import Dashboard from './pages/Dashboard';
 import DetailPage from './pages/DetailPage';
 import './App.css';
 
-export const caseData = [
+// This data is now ONLY for the Dashboard cards. All detail is fetched on the DetailPage.
+export const dashboardCases = [
   {
-    // High-level data for dashboard/overview
     requestId: 'AUTH-2024-001',
+    procedure: 'Total Knee Arthroplasty (TKA)',
+    status: 'Approved',
+    priority: 'Routine',
+    confidence: 94,
+    patient: { name: 'John Doe', age: 67, mrn: 'MRN-847392' },
+    insurance: { provider: 'Aetna PPO Gold' },
+    metrics: { processingTime: '9m 15s', documents: 2, agents: 7 },
+  },
+  {
+    requestId: 'AUTH-2024-002',
+    procedure: 'Cardiac Catheterization',
+    status: 'Pending Info',
+    priority: 'Urgent',
+    confidence: 91,
+    patient: { name: 'Sarah Johnson', age: 58, mrn: 'MRN-923847' },
+    insurance: { provider: 'Kaiser HMO Silver' },
+    metrics: { processingTime: '4m 10s', documents: 2, agents: 4 },
+  },
+  {
+    requestId: 'AUTH-2024-003',
     procedure: 'Total Knee Arthroplasty (TKA)',
     status: 'In Progress',
     priority: 'Routine',
     confidence: 0,
-    submitted: { date: '1/15/2024', time: '3:00:00 PM' },
-    metrics: { processingTime: 'N/A', documents: 2, agents: 0 },
-
-    // Detailed data for the new Eligibility payload
-    patient_payload: { "firstName": "Michael", "lastName": "Lee", "dateOfBirth": "1978-11-05", "gender": "M", "contactNumber": "+1-555-333-7777", "emailId": "michael.lee@example.com" },
-    insurance_payload: { "payerName": "Blue Cross Bronze PPO", "memberId": "M003", "policyNumber": "POL555666777" },
-    provider_payload: { "providerName": "Sunrise Hospital", "facilityNPI": "3344556677", "renderingPhysician": "Dr. Robert Kim", "physicianNPI": "8877665544" },
-    serviceDetails_payload: { "dateOfService": "2025-06-15", "typeOfService": "Inpatient", "cptCode": "27447", "diagnosisCode": "M17.11" },
-    clinical_payload: { "vitals": { "bloodPressure": "130/85", "heartRate": 82, "temperature": "99.0F", "respiratoryRate": 18, "spo2": "96%" }, "diagnosisList": [ { "icdCode": "M17.11", "description": "Unilateral primary osteoarthritis", "primary": true } ], "clinicalNotes": "Severe knee pain requiring surgery.", "medicalHistory": { "pastConditions": ["Hypertension"], "currentMedications": ["Lisinopril 10mg"] } },
-    
-    // Data for the Pre-Auth payload and other UI parts
-    memberId: 'M001', // Corresponds to the pre-auth payload member_id
-    serviceDetails: { cpt_code: "27447" },
-    clinicalDetails: { 
-      symptoms: "Severe knee pain",
-      diagnosis: 'Unilateral primary osteoarthritis',
-      clinicalHistory: ["Hypertension"],
-      // --- THIS IS THE UPDATED DOCUMENT STRUCTURE ---
-      documents: [ 
-        { "documentType": "Clinical Notes", "fileName": "doctor_notes_M001.pdf" }, 
-        { "documentType": "Imaging Report", "fileName": "xray_report_M001.pdf" } 
-      ] 
-    },
-
-    // Data for the Detail Page Overview
     patient: { name: 'Michael Lee', age: 47, mrn: 'MRN-847392' },
-    insurance: { provider: 'Blue Cross Bronze PPO', planId: 'BCBS-TX-8473921' },
-  },
+    insurance: { provider: 'Blue Cross Bronze PPO' },
+    metrics: { processingTime: 'N/A', documents: 2, agents: 0 },
+  }
 ];
 
 function App() {
@@ -51,8 +47,9 @@ function App() {
         </header>
         <main>
           <Routes>
-            <Route path="/" element={<Dashboard cases={caseData} />} />
-            <Route path="/case/:requestId" element={<DetailPage cases={caseData} />} />
+            <Route path="/" element={<Dashboard cases={dashboardCases} />} />
+            {/* The DetailPage route no longer needs props */}
+            <Route path="/case/:requestId" element={<DetailPage />} />
           </Routes>
         </main>
       </div>

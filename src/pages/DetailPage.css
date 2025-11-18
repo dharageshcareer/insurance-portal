@@ -1,62 +1,19 @@
-.detail-page {
-  max-width: auto;
-  margin: 0 auto;
-  text-align: left;
-  padding-bottom: 50px;
-  padding-left: 10%;
-    padding-right: 10%;
-}
+/* ... (existing styles for .detail-page, .back-link, .section-card, etc. remain the same) ... */
+.detail-page { max-width: 900px; margin: 0 auto; text-align: left; padding-bottom: 50px; }
+.back-link { display: inline-block; margin-bottom: 25px; color: #a485f8; text-decoration: none; font-weight: 500; }
+.back-link:hover { text-decoration: underline; }
+.section-card { background: #1a1625; border: 1px solid #3a334a; border-radius: 12px; padding: 25px; margin-bottom: 25px; }
+.section-card h2 { margin-top: 0; font-size: 1.5rem; color: #fff; background: linear-gradient(90deg, #a485f8, #7f56d9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; padding-bottom: 10px; border-bottom: 1px solid #3a334a; margin-bottom: 20px; }
+.loading { padding: 50px; text-align: center; font-size: 1.2rem; color: #a0aec0; }
+.error-message { color: #ef4444; margin-top: 15px; background-color: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 6px; border: 1px solid #ef4444; }
 
-.back-link {
-  display: inline-block;
-  margin-bottom: 25px;
-  color: #a485f8;
-  text-decoration: none;
-  font-weight: 500;
-}
-.back-link:hover {
-  text-decoration: underline;
-}
 
-.section-card {
-  background: #1a1625;
-  border: 1px solid #3a334a;
-  border-radius: 12px;
-  padding: 25px;
-  margin-bottom: 25px;
-}
+/* --- NEW AND UPDATED STYLES FOR DETAIL BLOCKS AND TABS --- */
 
-.section-card h2 {
-  margin-top: 0;
-  font-size: 1.5rem;
-  color: #fff;
-  background: linear-gradient(90deg, #a485f8, #7f56d9);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #3a334a;
-  margin-bottom: 20px;
-}
-
-.overview-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-}
-
-.overview-grid p, .tab-content p {
-  margin: 0;
-  color: #e2e8f0;
-}
-
-.overview-grid p strong {
-  color: #a0aec0;
-  font-weight: 500;
-}
-
-/* Tabs for Case Details */
+/* Tabs for Request Details */
 .specialization-tabs .tab-headers {
   display: flex;
+  flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
   gap: 10px;
   border-bottom: 1px solid #3a334a;
   margin-bottom: 20px;
@@ -78,45 +35,43 @@
 }
 
 .tab-content { min-height: 100px; color: #e2e8f0; }
-.tab-content h4 { color: #a0aec0; margin-bottom: 8px; }
-.tab-content ul { padding-left: 20px; margin: 0; }
-.tab-content li { margin-bottom: 8px; }
-.tab-content li span { color: #a0aec0; font-size: 0.9em; }
 
-/* --- NEW: Top-Level Agent Tab Styles --- */
-.agent-tabs-header {
-  display: flex;
-  border-bottom: 2px solid #3a334a;
-  margin-bottom: 20px;
+.detail-block {
+    margin-bottom: 20px;
+}
+.detail-block h4 {
+    color: #a0aec0;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #3a334a;
+    padding-bottom: 8px;
+}
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+.detail-key {
+    font-size: 0.8em;
+    color: #a0aec0;
+    margin-bottom: 4px;
+    text-transform: capitalize;
+}
+.detail-value {
+    font-size: 1em;
+    color: #e2e8f0;
+    font-weight: 500;
 }
 
-.agent-tabs-header button {
-  padding: 12px 25px;
-  border: none;
-  background: transparent;
-  color: #a0aec0;
-  cursor: pointer;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: -2px; /* Pull the active border over the main border */
-  border-bottom: 2px solid transparent;
-}
 
-.agent-tabs-header button.active {
-  color: #e2e8f0;
-  border-bottom: 2px solid #a485f8;
-}
-
-.agent-tabs-header button:disabled {
-  color: #6b7280;
-  cursor: not-allowed;
-}
-
-.error-message {
-  color: #ef4444;
-  margin-top: 15px;
-  background-color: rgba(239, 68, 68, 0.1);
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ef4444;
-}
+/* Agent Action Tabs */
+.agent-tabs-header { display: flex; border-bottom: 2px solid #3a334a; margin-bottom: 20px; }
+.agent-tabs-header button { padding: 12px 25px; border: none; background: transparent; color: #a0aec0; cursor: pointer; font-size: 1.1rem; font-weight: 600; margin-bottom: -2px; border-bottom: 2px solid transparent; }
+.agent-tabs-header button.active { color: #e2e8f0; border-bottom: 2px solid #a485f8; }
+.agent-tabs-header button:disabled { color: #6b7280; cursor: not-allowed; }
