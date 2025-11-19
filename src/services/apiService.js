@@ -56,21 +56,30 @@ const runAgentWorkflow = async (agentName, requestPayload, onEvent, onComplete, 
     try {
         const response = await fetch(`${BASE_URL}/run_sse`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ appName: agentName, userId: USER_ID, sessionId: sessionId, newMessage: { role: "user", parts: [{ "text": JSON.stringify(requestPayload) }] } }) });
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
+
         while (true) {
             const { done, value } = await reader.read();
-            if (done) break;
+            if (done) {
+                onComplete(); // The stream has finished
+                break;
+            }
+
             const chunk = decoder.decode(value);
             const lines = chunk.split('\n');
+
             for (const line of lines) {
                 if (line.startsWith('data: ')) {
                     const eventDataStr = line.substring('data: '.length);
                     if (!eventDataStr) continue;
                     try {
                         const eventData = JSON.parse(eventDataStr);
-                        const uiEvent = parseAgentEvent(eventData);
-                        if (uiEvent) onEvent(uiEvent);
+                        const agentEvent = parseAgentEvent(eventData);
+                        if (agentEvent) {
+                            onEvent(agentEvent); // Send the event to the UI
+                        }
                     } catch (e) { /* Ignore non-JSON lines */ }
                 }
             }
@@ -102,8 +111,8 @@ export const runPreAuthAgent = async (caseDetails, onEvent, onComplete, onError)
         member_id: caseDetails.insurance.memberId,
         cpt_code: caseDetails.serviceDetails.cptCode,
         document_paths: [ // The agent expects simple file paths
-            `./documents/doctor_notes_${caseDetails.insurance.memberId}.pdf`,
-            `./documents/xray_report_${caseDetails.insurance.memberId}.pdf`
+            `.datas/documents/doctor_notes_${caseDetails.insurance.memberId}.pdf`,
+            `.datas/documents/xray_report_${caseDetails.insurance.memberId}.pdf`
         ]
     };
     await runAgentWorkflow(PREAUTH_AGENT_NAME, preAuthRequest, onEvent, onComplete, onError);
